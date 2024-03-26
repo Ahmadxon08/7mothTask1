@@ -6,12 +6,17 @@ import "./Edit.scss";
 
 const initialState = {
   loading: true,
-  students: [],
+  students: {},
   error: null,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "FETCH_PENDING":
+      return {
+        ...state,
+        loading: true,
+      };
     case "FETCH_SUCCESS":
       return {
         ...state,
@@ -26,7 +31,11 @@ const reducer = (state, action) => {
         students: null,
         error: "Hatolik bor",
       };
-
+    case "UPDATE_PENDING":
+      return {
+        ...state,
+        loading: true,
+      };
     case "UPDATE_SUCCESS":
       return {
         ...state,
@@ -39,10 +48,14 @@ const reducer = (state, action) => {
         loading: false,
         error: "Tahrirlashda hatolik bor",
       };
+    default:
+      return state;
   }
 };
+
 const Edit = () => {
-  const { id } = useParams;
+  const { id } = useParams();
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const fetchData = async () => {
@@ -53,8 +66,6 @@ const Edit = () => {
         type: "FETCH_SUCCESS",
         payload: res.data,
       });
-
-      console.log(res.data);
     } catch (error) {
       dispatch({
         type: "FETCH_ERROR",
@@ -64,28 +75,22 @@ const Edit = () => {
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  //////////////////////////////////////////
-
-  const handleChange = ({ target }) => {
-    const { name, value } = target;
-    alert("Are you sure you want to change this student account ?");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     dispatch({
       type: "UPDATE_SUCCESS",
       payload: { ...state.students, [name]: value },
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put(
-        `http://localhost:3000/students/${id}`,
-        state.students
-      );
+      dispatch({ type: "UPDATE_PENDING" });
+      await axios.put(`http://localhost:3000/students/${id}`, state.students);
       dispatch({ type: "UPDATE_SUCCESS" });
-      console.log(res.data);
     } catch (error) {
       dispatch({ type: "UPDATE_ERROR" });
     }
@@ -98,27 +103,27 @@ const Edit = () => {
           <Link to="/">go back</Link>
           <h1>Students' editor page</h1>
         </div>
-        <div className="edit_content">
+        <form onSubmit={handleSubmit} className="edit_content">
           <div className="edit_body">
             <div className="name">
-              <label htmlFor="firstName">FirstName</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 type="text"
                 name="firstName"
                 id="firstName"
-                placeholder="firstName"
-                value={state?.students?.name}
+                placeholder="First Name"
+                value={state?.students.name || ""}
                 onChange={handleChange}
               />
             </div>
             <div className="lastName">
-              <label htmlFor="lastName">FirstName</label>
+              <label htmlFor="lastName">Last Name</label>
               <input
                 type="text"
                 name="lastName"
                 id="lastName"
-                placeholder="lastName"
-                value={state?.students?.username}
+                placeholder="Last Name"
+                value={state.students?.username || ""}
                 onChange={handleChange}
               />
             </div>
@@ -128,17 +133,19 @@ const Edit = () => {
                 type="text"
                 name="group"
                 id="group"
-                placeholder="group"
-                value={state?.student?.company?.name}
+                placeholder="Group"
+                value={state.students?.company?.name || ""}
                 onChange={handleChange}
               />
             </div>
+            <div className="edit_btn">
+              <button className="btn1" type="submit">
+                Save
+              </button>
+              <button className="btn2">Cancel</button>
+            </div>
           </div>
-          <div className="edit_btn">
-            <button onClick={handleSubmit}>Save</button>
-            <button>Cancel</button>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   );
