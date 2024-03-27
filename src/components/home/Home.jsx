@@ -110,7 +110,7 @@ const Home = () => {
             <span>id</span>
             <span>firstName</span>
             <span>lastName</span>
-            <span>group</span>
+            <span>website</span>
             <span>action</span>
           </div>
           <div className="body">
@@ -119,7 +119,7 @@ const Home = () => {
                 <span>{student.id}</span>
                 <span>{student.name}</span>
                 <span>{student.username}</span>
-                <span>{student.company.name}</span>
+                <span>{student?.website}</span>
                 <span className="action">
                   <Link to={`./edit/${student.id}`}>
                     <button className="btn1">

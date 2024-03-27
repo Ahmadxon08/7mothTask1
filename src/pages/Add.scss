@@ -1,0 +1,65 @@
+.add {
+  .add_head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 100px;
+    width: 100%;
+    gap: 20px;
+    .form-control {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      gap: 8px;
+      label {
+        display: flex;
+        font-family: Rubik;
+        font-size: 18px;
+        color: #333;
+        text-align: left !important;
+        font-weight: 600;
+      }
+      input {
+        display: flex;
+        color: #333;
+        font-family: Rubik;
+        font-size: 18px;
+
+        border-radius: 3px;
+        outline: none;
+        width: 40%;
+        border-radius: 3px;
+        border: 0;
+        height: 50px;
+        padding: 0 20px;
+        font-family: Rubik;
+        border: 1px solid #ccc;
+      }
+    }
+    .btn11{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 3px;
+        font-size: 18px;
+        font-family: Rubik;
+        cursor: pointer;
+        color: #fff;
+        padding: 8px 12px;
+        transition: all 0.3s;
+        background-color: rgb(65, 179, 129);
+        
+    }
+    .btn11:active{
+        transform: scale(0.96);
+    }
+  }
+}
